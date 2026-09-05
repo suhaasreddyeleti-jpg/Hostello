@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#162033" />
+  <meta name="description" content="Hostello - simple PG management for owners" />
+  <title>Hostello — PG Management</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="sky-bg" aria-hidden="true">
+    <div class="cloud cloud-a"></div>
+    <div class="cloud cloud-b"></div>
+    <div class="cloud cloud-c"></div>
+  </div>
+
+  <div id="toast" class="toast" aria-live="polite"></div>
+
+  <!-- LOGIN -->
+  <section id="loginView" class="login-view">
+    <div class="login-card glass">
+
+      <div class="brand brand-large">
+        <div class="brand-mark">H</div>
+        <div>
+          <h1>HOSTELLO</h1>
+          <p>PG Management, Simplified.</p>
+        </div>
+      </div>
+
+      <div class="login-bed">🛏️</div>
+
+      <h2>Owner Login</h2>
+
+      <p class="muted">
+        Firebase Google Authentication will be connected here.
+      </p>
+
+      <form id="loginForm" class="stack-form">
+
+        <label>
+          Email
+          <input
+            id="loginEmail"
+            type="email"
+            placeholder="owner@example.com"
+            value="owner@example.com"
+            required
+          />
+        </label>
+
+        <label>
+          Password
+          <input
+            id="loginPassword"
+            type="password"
+            placeholder="••••••••"
+            value="hostello"
+            required
+          />
+        </label>
+
+        <button
+          class="btn btn-primary btn-full"
+          type="submit"
+        >
+          Login to Hostello
+        </button>
+
+      </form>
+
+      <p class="demo-note">
+        Google Authentication will replace this demo login in the next step.
+      </p>
+
+    </div>
+  </section>
+
+  <!-- APP -->
+  <div id="appView" class="app-shell hidden">
+
+    <header class="topbar glass">
+
+      <button
+        id="mobileMenuBtn"
+        class="icon-btn mobile-menu"
+        aria-label="Open menu"
+      >
+        ☰
+      </button>
+
+      <div class="brand">
+
+        <div class="brand-mark">H</div>
+
+        <div>
+          <h1>HOSTELLO</h1>
+          <span id="topbarPropertyName">
+            JS Men's PG
+          </span>
+        </div>
+
+      </div>
+
+      <div class="topbar-actions">
+
+        <button
+          id="topAddTenantBtn"
+          class="btn btn-primary top-add-btn"
+        >
+          + Add New Tenant
+        </button>
+
+        <button
+          id="quickInvoiceBtn"
+          class="icon-btn"
+          title="Generate monthly bills"
+          aria-label="Generate monthly bills"
+        >
+          🧾
+        </button>
+
+        <div
+          class="avatar"
+          id="topAvatar"
+        >
+          O
+        </div>
+
+      </div>
+
+    </header>
+
+    <div class="layout">
+
+      <!-- SIDEBAR -->
+      <aside
+        id="sidebar"
+        class="sidebar glass"
+      >
+
+        <nav class="nav">
+
+          <button
+            class="nav-item active"
+            data-section="dashboard"
+          >
+            <span>⌂</span>
+            Dashboard
+          </button>
+
+          <button
+            class="nav-item"
+            data-section="beds"
+          >
+            <span>🛏️</span>
+            Beds
+          </button>
+
+          <button
+            class="nav-item"
+            data-section="tenants"
+          >
+            <span>👤</span>
+            Tenants
+          </button>
+
+          <button
+            class="nav-item"
+            data-section="invoices"
+          >
+            <span>₹</span>
+            Payments &amp; Invoices
+          </button>
+
+          <button
+            class="nav-item"
+            data-section="past"
+          >
+            <span>◷</span>
+            Past Tenants
+          </button>
+
+          <button
+            class="nav-item"
+            data-section="settings"
+          >
+            <span>⚙</span>
+            Settings
+          </button>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+          <div class="owner-mini">
+
+            <div
+              class="avatar small"
+              id="sideAvatar"
+            >
+              O
+            </div>
+
+            <div class="owner-text">
+
+              <strong id="sidebarOwner">
+                Owner
+              </strong>
+
+              <small id="sidebarEmail">
+                owner@example.com
+              </small>
+
+            </div>
+
+          </div>
+
+          <button
+            id="logoutBtn"
+            class="logout-btn"
+          >
+            ↪ Logout
+          </button>
+
+        </div>
+
+      </aside>
+
+      <main class="main-content">
+
+        <!-- DASHBOARD -->
+        <section
+          id="section-dashboard"
+          class="app-section"
+        >
+
+          <div class="page-heading">
+
+            <div>
+
+              <span class="eyebrow">
+                OWNER DASHBOARD
+              </span>
+
+              <h2>
+                Good morning
+                <span id="ownerGreetingName"></span>.
+              </h2>
+
+              <p>
+                See your PG status and take the next action quickly.
+              </p>
+
+            </div>
+
+            <div class="heading-actions">
+
+              <button
+                id="dashboardAddTenant"
+                class="btn btn-primary"
+              >
+                + Add New Tenant
+              </button>
+
+              <button
+                id="dashboardGoInvoices"
+                class="btn btn-secondary"
+              >
+                Payments &amp; Invoices
+              </button>
+
+              <button
+                id="dashboardGenerate"
+                class="btn btn-secondary"
+              >
+                Generate Bills
+              </button>
+
+            </div>
+
+          </div>
+
+          <div class="stats-grid">
+
+            <div class="stat-card">
+              <span>Total Beds</span>
+              <strong id="statTotal">0</strong>
+            </div>
+
+            <div class="stat-card">
+              <span>Occupied</span>
+              <strong id="statOccupied">0</strong>
+            </div>
+
+            <div class="stat-card">
+              <span>Vacant</span>
+              <strong id="statVacant">0</strong>
+            </div>
+
+            <div class="stat-card">
+              <span>Notice</span>
+              <strong id="statNotice">0</strong>
+            </div>
+
+          </div>
+
+          <div class="dashboard-grid">
+
+            <div class="panel glass">
+
+              <div class="panel-header">
+
+                <div>
+                  <h3>PG Overview</h3>
+                  <p>Floor → Room → Bed</p>
+                </div>
+
+                <span
+                  id="occupancyPill"
+                  class="occupancy-pill"
+                >
+                  0% used
+                </span>
+
+              </div>
+
+              <div
+                id="dashboardFloors"
+                class="floor-list"
+              ></div>
+
+            </div>
+
+            <div class="panel glass">
+
+              <div class="panel-header">
+
+                <div>
+                  <h3>Upcoming Vacates</h3>
+                  <p>
+                    Tenants currently on notice
+                  </p>
+                </div>
+
+              </div>
+
+              <div
+                id="upcomingVacates"
+                class="mini-list"
+              ></div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- BEDS -->
+        <section
+          id="section-beds"
+          class="app-section hidden"
+        >
+
+          <div class="page-heading">
+
+            <div>
+
+              <span class="eyebrow">
+                BED MANAGEMENT
+              </span>
+
+              <h2 id="bedHeading">
+                Select a floor
+              </h2>
+
+              <p id="bedSubheading">
+                Choose a floor to view its rooms.
+              </p>
+
+            </div>
+
+            <div
+              class="breadcrumb"
+              id="bedBreadcrumb"
+            ></div>
+
+          </div>
+
+          <div class="bed-legend">
+
+            <span>
+              <i class="legend-dot green"></i>
+              Occupied
+            </span>
+
+            <span>
+              <i class="legend-dot white"></i>
+              Vacant
+            </span>
+
+            <span>
+              <i class="legend-dot brown"></i>
+              Notice
+            </span>
+
+          </div>
+
+          <div id="bedsView"></div>
+
+        </section>
+
+        <!-- TENANTS -->
+        <section
+          id="section-tenants"
+          class="app-section hidden"
+        >
+
+          <div class="page-heading">
+
+            <div>
+
+              <span class="eyebrow">
+                TENANT MANAGEMENT
+              </span>
+
+              <h2>Tenants</h2>
+
+              <p>
+                Current residents and their assigned beds.
+              </p>
+
+            </div>
+
+            <div class="heading-actions tenant-heading-actions">
+
+              <input
+                id="tenantSearch"
+                class="search-input"
+                placeholder="Search name, mobile, room, bed..."
+              />
+
+              <button
+                id="tenantAddBtn"
+                class="btn btn-primary"
+              >
+                + Add New Tenant
+              </button>
+
+            </div>
+
+          </div>
+
+          <div class="panel glass">
+
+            <div
+              id="tenantTableWrap"
+              class="table-wrap"
+            ></div>
+
+          </div>
+
+        </section>
+
+        <!-- PAYMENTS & INVOICES -->
+        <section
+          id="section-invoices"
+          class="app-section hidden"
+        >
+
+          <div class="page-heading">
+
+            <div>
+
+              <span class="eyebrow">
+                MONTHLY BILLING
+              </span>
+
+              <h2>
+                Payments &amp; Invoices
+              </h2>
+
+              <p>
+                Generate monthly bills, open WhatsApp,
+                and record payment status.
+              </p>
+
+            </div>
+
+            <div class="heading-actions">
+
+              <button
+                id="generateBillsBtn"
+                class="btn btn-primary"
+              >
+                Generate Monthly Bills
+              </button>
+
+              <button
+                id="sendAllBtn"
+                class="btn btn-secondary"
+              >
+                Send All WhatsApp
+              </button>
+
+            </div>
+
+          </div>
+
+          <div class="invoice-summary-grid">
+
+            <div class="mini-stat">
+              <span>Invoices</span>
+              <strong id="invoiceCount">0</strong>
+            </div>
+
+            <div class="mini-stat">
+              <span>Sent</span>
+              <strong id="invoiceSent">0</strong>
+            </div>
+
+            <div class="mini-stat">
+              <span>Pending</span>
+              <strong id="invoicePending">0</strong>
+            </div>
+
+            <div class="mini-stat">
+              <span>Paid</span>
+              <strong id="invoicePaid">0</strong>
+            </div>
+
+            <div class="mini-stat">
+              <span>Unpaid</span>
+              <strong id="invoiceUnpaid">0</strong>
+            </div>
+
+          </div>
+
+          <div class="panel glass">
+
+            <div class="toolbar">
+
+              <input
+                id="invoiceSearch"
+                class="search-input"
+                placeholder="Search tenant / invoice / room..."
+              />
+
+              <select
+                id="invoiceStatusFilter"
+              >
+                <option value="all">
+                  All Payments
+                </option>
+
+                <option value="paid">
+                  Paid
+                </option>
+
+                <option value="unpaid">
+                  Unpaid
+                </option>
+              </select>
+
+              <select
+                id="invoiceWaFilter"
+              >
+                <option value="all">
+                  All WhatsApp
+                </option>
+
+                <option value="sent">
+                  Sent
+                </option>
+
+                <option value="pending">
+                  Pending
+                </option>
+              </select>
+
+            </div>
+
+            <div
+              id="invoiceTableWrap"
+              class="table-wrap"
+            ></div>
+
+          </div>
+
+        </section>
+
+        <!-- PAST TENANTS -->
+        <section
+          id="section-past"
+          class="app-section hidden"
+        >
+
+          <div class="page-heading">
+
+            <div>
+
+              <span class="eyebrow">
+                ARCHIVE
+              </span>
+
+              <h2>Past Tenants</h2>
+
+              <p>
+                Historical records stay available after a tenant leaves.
+              </p>
+
+            </div>
+
+            <input
+              id="pastSearch"
+              class="search-input"
+              placeholder="Search past tenant..."
+            />
+
+          </div>
+
+          <div class="panel glass">
+
+            <div
+              id="pastTableWrap"
+              class="table-wrap"
+            ></div>
+
+          </div>
+
+        </section>
+
+        <!-- SETTINGS -->
+        <section
+          id="section-settings"
+          class="app-section hidden"
+        >
+
+          <div class="page-heading">
+
+            <div>
+
+              <span class="eyebrow">
+                CONFIGURATION
+              </span>
+
+              <h2>Settings</h2>
+
+              <p>
+                Manage your PG details and monthly defaults.
+              </p>
+
+            </div>
+
+          </div>
+
+          <div class="settings-grid">
+
+            <div class="panel glass">
+
+              <div class="panel-header">
+
+                <div>
+
+                  <h3>
+                    PG Information
+                  </h3>
+
+                  <p>
+                    These details are used in monthly invoice text.
+                  </p>
+
+                </div>
+
+              </div>
+
+              <form
+                id="settingsForm"
+                class="form-grid"
+              >
+
+                <label>
+                  PG Name
+
+                  <input
+                    id="setPgName"
+                    required
+                  />
+                </label>
+
+                <label>
+                  Owner Name
+
+                  <input
+                    id="setOwnerName"
+                    required
+                  />
+                </label>
+
+                <label>
+                  Owner Phone
+
+                  <input
+                    id="setOwnerPhone"
+                  />
+                </label>
+
+                <label>
+                  UPI ID
+
+                  <input
+                    id="setUpi"
+                    placeholder="owner@upi"
+                  />
+                </label>
+
+                <label class="full">
+                  Address
+
+                  <textarea
+                    id="setAddress"
+                  ></textarea>
+                </label>
+
+                <label>
+                  Default Rent
+
+                  <input
+                    id="setRent"
+                    type="number"
+                    min="0"
+                  />
+                </label>
+
+                <label>
+                  Default Maintenance
+
+                  <input
+                    id="setMaintenance"
+                    type="number"
+                    min="0"
+                  />
+                </label>
+
+                <label>
+                  Due Day
+
+                  <input
+                    id="setDueDay"
+                    type="number"
+                    min="1"
+                    max="28"
+                  />
+                </label>
+
+                <div
+                  class="full form-actions"
+                >
+
+                  <button
+                    class="btn btn-primary"
+                    type="submit"
+                  >
+                    Save Settings
+                  </button>
+
+                </div>
+
+              </form>
+
+            </div>
+
+            <div class="panel glass">
+
+              <div class="panel-header">
+
+                <div>
+
+                  <h3>
+                    Property Structure
+                  </h3>
+
+                  <p>
+                    Default setup: 3 floors ×
+                    6 rooms × 4 beds.
+                    Beds can be added or removed
+                    when vacant.
+                  </p>
+
+                </div>
+
+              </div>
+
+              <div
+                id="structureSummary"
+                class="structure-summary"
+              ></div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+      </main>
+
+    </div>
+
+  </div>
+
+  <!-- MODAL -->
+  <div
+    id="modalBackdrop"
+    class="modal-backdrop hidden"
+  >
+
+    <div
+      id="modal"
+      class="modal-card glass"
+      role="dialog"
+      aria-modal="true"
+    ></div>
+
+  </div>
+
+  <!-- FIREBASE SDK -->
+  <script type="module">
+
+    import {
+      initializeApp
+    } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+
+    /*
+      Hostello Firebase Web App configuration
+    */
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC7TrbwEUBWGlcTasFQwZaSGhKm4_qpX7s",
+      authDomain: "hostello-b1af8.firebaseapp.com",
+      projectId: "hostello-b1af8",
+      storageBucket: "hostello-b1af8.firebasestorage.app",
+      messagingSenderId: "357843063686",
+      appId: "1:357843063686:web:240cf7870570ffaeb71207"
+    };
+
+    /*
+      Initialize Firebase
+    */
+
+    const firebaseApp =
+      initializeApp(firebaseConfig);
+
+    /*
+      Make the initialized Firebase app
+      available to script.js.
+
+      Authentication will be connected
+      in the next step.
+    */
+
+    window.hostelloFirebaseApp =
+      firebaseApp;
+
+  </script>
+
+  <!-- HOSTELLO APP -->
+  <script src="script.js"></script>
+
+</body>
+</html>
