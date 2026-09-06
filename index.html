@@ -5,9 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#162033" />
   <meta name="description" content="Hostello - simple PG management for owners" />
+
+  <!-- iOS PWA -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Hostello" />
+
   <title>Hostello — PG Management</title>
+
+  <!-- Hostello CSS -->
   <link rel="stylesheet" href="style.css" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json" />
+
+  <!-- iOS Home Screen Icon -->
+  <link rel="apple-touch-icon" href="icon-192.png" />
 </head>
+
 <body>
 
   <div class="sky-bg" aria-hidden="true">
@@ -24,6 +39,7 @@
 
       <div class="brand brand-large">
         <div class="brand-mark">H</div>
+
         <div>
           <h1>HOSTELLO</h1>
           <p>PG Management, Simplified.</p>
@@ -97,6 +113,7 @@
 
         <div>
           <h1>HOSTELLO</h1>
+
           <span id="topbarPropertyName">
             JS Men's PG
           </span>
@@ -340,6 +357,7 @@
 
                 <div>
                   <h3>Upcoming Vacates</h3>
+
                   <p>
                     Tenants currently on notice
                   </p>
@@ -548,9 +566,8 @@
                 placeholder="Search tenant / invoice / room..."
               />
 
-              <select
-                id="invoiceStatusFilter"
-              >
+              <select id="invoiceStatusFilter">
+
                 <option value="all">
                   All Payments
                 </option>
@@ -562,11 +579,11 @@
                 <option value="unpaid">
                   Unpaid
                 </option>
+
               </select>
 
-              <select
-                id="invoiceWaFilter"
-              >
+              <select id="invoiceWaFilter">
+
                 <option value="all">
                   All WhatsApp
                 </option>
@@ -578,6 +595,7 @@
                 <option value="pending">
                   Pending
                 </option>
+
               </select>
 
             </div>
@@ -867,6 +885,27 @@
 
   <!-- HOSTELLO APP -->
   <script src="script.js"></script>
+
+  <!-- PWA SERVICE WORKER -->
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker
+          .register("/service-worker.js")
+          .then(() => {
+            console.log(
+              "Hostello service worker registered"
+            );
+          })
+          .catch((error) => {
+            console.error(
+              "Hostello service worker registration failed:",
+              error
+            );
+          });
+      });
+    }
+  </script>
 
 </body>
 </html>
